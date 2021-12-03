@@ -99,6 +99,6 @@ internal static class Program
         Console.WriteLine("Options:");
         Console.WriteLine($"{"  -f, --files",       -25}Search for files only.");
         Console.WriteLine($"{"  -d, --directories", -25}Search for directories only.");
-        Console.WriteLine($"{"  -h, --hidden", -25}Include hidden files and directories in the search.");
+        Console.WriteLine($"{"  -h, --hidden",      -25}Include hidden files and directories in the search.");
     }
 }
