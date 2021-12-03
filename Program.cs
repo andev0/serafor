@@ -63,8 +63,12 @@ internal static class Program
                     {
                         FileInfo fileInfo = new FileInfo(filename);
 
-                        if ((!fileInfo.Attributes.HasFlag(FileAttributes.Hidden) || includeHidden) &&
-                            regexQuery.IsMatch(fileInfo.Name))
+                        if ((fileInfo.Attributes.HasFlag(FileAttributes.Hidden) && !includeHidden))
+                        {
+                            continue;
+                        }
+
+                        if (regexQuery.IsMatch(fileInfo.Name))
                         {
                             Console.WriteLine(filename);
                         }
@@ -74,16 +78,18 @@ internal static class Program
                 Parallel.ForEach(Directory.EnumerateDirectories(directory), (subDirectory) => {
                     DirectoryInfo directoryInfo = new DirectoryInfo(subDirectory);
 
-                    if ((!directoryInfo.Attributes.HasFlag(FileAttributes.Hidden) || includeHidden))
+                    if ((directoryInfo.Attributes.HasFlag(FileAttributes.Hidden) && !includeHidden))
                     {
-                        if (searchMode.HasFlag(SearchModes.Directories) &&
-                            regexQuery.IsMatch(directoryInfo.Name))
-                        {
-                            Console.WriteLine(subDirectory);
-                        }
-
-                        SearchAndPrintFiles(subDirectory, regexQuery, searchMode, includeHidden);
+                        return;
                     }
+
+                    if (searchMode.HasFlag(SearchModes.Directories) &&
+                        regexQuery.IsMatch(directoryInfo.Name))
+                    {
+                        Console.WriteLine(subDirectory);
+                    }
+
+                    SearchAndPrintFiles(subDirectory, regexQuery, searchMode, includeHidden);
                 });
             }
             catch (UnauthorizedAccessException) { }
