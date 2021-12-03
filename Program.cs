@@ -92,8 +92,18 @@ internal static class Program
                     SearchAndPrintFiles(subDirectory, regexQuery, searchMode, includeHidden);
                 });
             }
-            catch (UnauthorizedAccessException) { }
-            catch (DirectoryNotFoundException) { }
+            catch (UnauthorizedAccessException ex)
+            {
+                #if DEBUG
+                Console.WriteLine(ex);
+                #endif
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                #if DEBUG
+                Console.WriteLine(ex);
+                #endif
+            }
         }
     }
 
